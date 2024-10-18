@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_affordability_calculator_document">
+            <div class="page">
+                <table class="table table-bordered table-sm mb-4">
+                    <colgroup>
+                        <col span="1" style="width:40%;"/>
+                        <t t-if="doc.applicant_2">
+                            <col span="1" style="width:30%"/>
+                            <col span="1" style="width:30%"/>
+                        </t>
+                        <t t-if="not doc.applicant_2">
+                            <col span="2" style="width:60%;"/>
+                        </t>
+                    </colgroup>
+                    <tr>
+                        <th class="pl-3">
+                            Application Ref. No.
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Name
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1.name"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Age
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1_age"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2_age"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Age At End Of Term
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1_age_end_of_term"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2_age_end_of_term"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Mortgage Term
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.mortgrage_term_year"/> years <span t-field="doc.mortgrage_term_months"/> months
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Self Employed?
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.self_employed_1"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.self_employed_2"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            First Time Buyer
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.first_time_buyer"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Number of Dependents
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.no_of_dependents"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Required NDI Monthly
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.ndi_monthly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Property Value
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.property_value"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Mortgage Amount
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.mortgage_amount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Variable Interest Rate
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <t t-set="precision" t-value="len(str(doc.interest_rate).split('.')[1].rstrip('0'))"/>
+                            <span t-field="doc.interest_rate" t-options="{'widget': 'float', 'precision': precision}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Fixed Interest Rate
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <t t-set="precision" t-value="len(str(doc.fixed_interest_rate).split('.')[1].rstrip('0'))"/>
+                            <span t-field="doc.fixed_interest_rate" t-options="{'widget': 'float', 'precision': precision}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Total Basic Income
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.total_basic_income_1"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.total_basic_income_2"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Total Net Basic Income
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.total_net_basic_income_1"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.total_net_basic_income_2"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Total Other Net Income
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.total_other_income_1"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.total_other_income_2"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Total Net Income
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.total_income"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            % Of Other Income Counted
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.other_income_counted"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            % Of 2nd Income Counted
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.nd2_income_counted"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Total Sustainable Income
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.total_sustainable_income"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Allowable Monthly Income
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.allowable_monthly_income"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Employment Detail Summary Income for Last Year
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1_p60"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2_p60"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Annual Pension Contribution
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1_ann_pen"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2_ann_pen"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Existing Mortgage Commitments
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1_exi_mor"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2_exi_mor"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Rental Income
+                        </th>
+                        <td class="pl-3">
+                            <span t-field="doc.applicant_1_rental_income"/>
+                        </td>
+                        <td t-if="doc.applicant_2" class="pl-3">
+                            <span t-field="doc.applicant_2_rental_income"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Monthly Debt Repayments
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.debt_repay"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Future Property Costs
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.property_co"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Monthly Childcare Costs
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.childcare"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Maintenance
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.maintenance"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Total Short Term Debt
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.total_short_term"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Gift towards deposit?
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.gifts_towards_deposit"/>
+                        </td>
+                    </tr>
+                    <tr t-if="doc.gifts_towards_deposit == 'yes'">
+                        <th class="pl-3">
+                            Value of Gifts
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.values_of_gifts"/>
+                        </td>
+                    </tr>
+                    <tr t-if="doc.gifts_towards_deposit == 'yes'">
+                        <th class="pl-3">
+                            Gift Letter Received
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.gifts_letter_received"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Contribution to Valuation
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.contribution_to_valuation"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Contribution to Revaluation
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.contribution_to_revaluation"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">
+                            Other Once Off Costs
+                        </th>
+                        <td class="pl-3" colspan="2">
+                            <span t-field="doc.once_off_costs"/>
+                        </td>
+                    </tr>
+                </table>
+                <t t-if="doc.self_employed_1 == 'yes'">
+                    <h5 class="text-center mt-4">Calculation of Self Employed Income - Applicant 1</h5>
+                    <table class="table table-bordered table-sm mb-4">
+                        <tr class="text-center">
+                            <th class="pl-3"></th>
+                            <th class="pl-3">Most Recent Year(MRY)</th>
+                            <th class="pl-3">MRY-1</th>
+                            <th class="pl-3">MRY-2</th>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Net Profit</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_net_profit_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_net_profit_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_net_profit_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Depreciation</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_depreceation_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_depreceation_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_depreceation_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Interest Paid</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_interest_paid_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_interest_paid_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_interest_paid_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Remuneration</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_remuneration_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_remuneration_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_remuneration_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Pension</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_pension_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_pension_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_plus_pension_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Trading Profit</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_trading_profit_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_trading_profit_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_trading_profit_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Average Trading Profit</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_average_trading_profit"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Less Business Repayments</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_less_business_repayments"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Surplus</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_surplus"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Notice of Assessment</th>
+                            <td class="text-center"><span t-field="doc.applicant_1_notice_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_notice_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_1_notice_3"/></td>
+                        </tr>
+                    </table>
+                </t>
+                <t t-if="doc.applicant_2 and doc.self_employed_2 == 'yes'">
+                    <h5 class="text-center mt-4">Calculation of Self Employed Income - Applicant 2</h5>
+                    <table class="table table-bordered table-sm mt-4 mb-4">
+                        <tr class="text-center">
+                            <th class="pl-3"></th>
+                            <th class="pl-3">Most Recent Year(MRY)</th>
+                            <th class="pl-3">MRY-1</th>
+                            <th class="pl-3">MRY-2</th>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Net Profit</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_net_profit_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_net_profit_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_net_profit_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Depreciation</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_depreceation_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_depreceation_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_depreceation_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Interest Paid</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_interest_paid_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_interest_paid_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_interest_paid_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Remuneration</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_remuneration_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_remuneration_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_remuneration_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Plus Pension</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_pension_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_pension_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_plus_pension_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Trading Profit</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_trading_profit_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_trading_profit_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_trading_profit_3"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Average Trading Profit</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_average_trading_profit"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Less Business Repayments</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_less_business_repayments"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Surplus</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_surplus"/></td>
+                        </tr>
+                        <tr>
+                            <th class="pl-3">Notice of Assessment</th>
+                            <td class="text-center"><span t-field="doc.applicant_2_notice_1"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_notice_2"/></td>
+                            <td class="text-center"><span t-field="doc.applicant_2_notice_3"/></td>
+                        </tr>
+                    </table>
+                </t>
+                <table class="table table-bordered table-sm mt-4">
+                    <colgroup>
+                        <col span="1" style="width:40%;"/>
+                        <col span="1" style="width:60%;"/>
+                    </colgroup>
+
+                    <tr>
+                        <th class="pl-3">Monthly Repayment</th>
+                        <td class="pl-3"><span t-field="doc.monthly_repayment"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Loan to Value %</th>
+                        <td class="pl-3"><span t-field="doc.loan_to_value"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Loan to Income Ratio</th>
+                        <td class="pl-3"><span t-field="doc.loan_to_income_ratio"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Mortgage Service Ratio %</th>
+                        <td class="pl-3"><span t-field="doc.mortgage_service_ratio"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Total Debt Service Ratio %</th>
+                        <td class="pl-3"><span t-field="doc.total_debt_service_ratio"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Net Disposable Inc.</th>
+                        <td class="pl-3"><span t-field="doc.net_disposable_inc"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Gift to Deposit %</th>
+                        <td class="pl-3"><span t-field="doc.gift_to_deposit"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Max Lend Facility</th>
+                        <td class="pl-3"><span t-field="doc.max_lend_facility"/></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-sm mt-4">
+                    <colgroup>
+                        <col span="1" style="width:40%;"/>
+                        <col span="1" style="width:60%;"/>
+                    </colgroup>
+                    <tr>
+                        <th class="text-center" colspan="2"><h5>Stress Test</h5></th>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Monthly Income Reduced %</th>
+                        <td class="pl-3"><span t-field="doc.monthly_income_reduced"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Interest Rate Increase %</th>
+                        <td class="pl-3"><span t-field="doc.interest_rate_increase"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Stressed Income</th>
+                        <td class="pl-3"><span t-field="doc.stressed_income"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Stressed Allowable Income</th>
+                        <td class="pl-3"><span t-field="doc.stressed_allowable_income" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Stressed Monthly Repayment</th>
+                        <td class="pl-3"><span t-field="doc.stressed_monthly_repayment" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Stressed Mortgage Service Ratio</th>
+                        <td class="pl-3"><span t-field="doc.stressed_mortgage_service_ratio"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Stressed Total Debt Service Ratio</th>
+                        <td class="pl-3"><span t-field="doc.stressed_total_debt_service_ratio"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Stressed Net Disposable Income</th>
+                        <td class="pl-3"><span t-field="doc.stressed_net_disposable_income" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-sm mt-4">
+                    <colgroup>
+                        <col span="1" style="width:40%;"/>
+                        <col span="1" style="width:60%;"/>
+                    </colgroup>
+                    <tr class="mt-2">
+                        <th class="text-center" colspan="2"><h5>ESIS</h5></th>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Payment Frequency</th>
+                        <td class="pl-3"><span t-field="doc.esis_payment_frequency"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Number of Repayments</th>
+                        <td class="pl-3"><span t-field="doc.esis_no_of_repayment"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Total Repaid</th>
+                        <td class="pl-3"><span t-field="doc.esis_total_repaid"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Cost of Credit</th>
+                        <td class="pl-3"><span t-field="doc.esis_cost_of_credit"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Cost per €1</th>
+                        <td class="pl-3"><span t-field="doc.esis_cost_per_1"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Interest Rate plus 1%</th>
+                        <td class="pl-3"><span t-field="doc.esis_interest_rate"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">APRC</th>
+                        <td class="pl-3"><span t-field="doc.esis_aprc"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">APRC + 1%</th>
+                        <td class="pl-3"><span t-field="doc.esis_aprc_1"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Mortgage Type</th>
+                        <td class="pl-3"><span t-field="doc.mortgage_type"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Term @ Starting Rate</th>
+                        <td class="pl-3"><span t-field="doc.term_at_starting_rate"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Fixed Term Payment</th>
+                        <td class="pl-3"><span t-field="doc.fixed_term_payment" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Re-Payment @ Variable </th>
+                        <td class="pl-3"><span t-field="doc.repayment_at_variable" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Re-Payment @ Variable +1%</th>
+                        <td class="pl-3"><span t-field="doc.repayment_at_variable_plus1" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Re-Payment @ Variable +2%</th>
+                        <td class="pl-3"><span t-field="doc.repayment_at_variable_plus2" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Max Possible Re-Payment</th>
+                        <td class="pl-3"><span t-field="doc.max_possible_repayment"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Average Re-Payment</th>
+                        <td class="pl-3"><span t-field="doc.avg_repayment" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Average Rate</th>
+                        <td class="pl-3"><span t-field="doc.avg_rate" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                    <tr>
+                        <th class="pl-3">Average Re-Payment +1%</th>
+                        <td class="pl-3"><span t-field="doc.avg_repayment_plus1" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_affordability_calculator">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="appsmod2.report_affordability_calculator_document" t-lang="doc.applicant_1.lang"/>
+                    </t>
+                </t>
+		    </t>
+		</template>
+    </data>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="appsmod2_partner_view_form_inherit" model="ir.ui.view">
+        <field name="name">appsmod2.partner.view.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[@name='address_name']" position="before">
+                <field name="first_name" required="1"/>
+                <field name="last_name" required="1"/>
+                <field name="member_id" required="1"/>
+                <field name="DOB" required="1" />
+            </xpath>
+
+            <xpath expr="//h1/field[@name='name']" position="replace">
+                <field name="name" readonly="1" force_save="1"/>
+            </xpath>
+
+            <field name="company_type" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <field name="parent_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <field name="state_id" position="attributes">
+                <attribute name="placeholder">County</attribute>
+            </field>
+
+            <field name="zip" position="attributes">
+                <attribute name="placeholder">EIRCODE</attribute>
+            </field>
+
+            <field name="vat" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <page name="contact_addresses" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+
+            <page name="sales_purchases" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+        </field>
+    </record>
+</odoo>

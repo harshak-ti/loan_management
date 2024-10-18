@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_letter_of_offer_document">
+            <t t-call="appsmod2.appsmod2_external_layout_2">
+                <div class="page" style="font-size:15px;">
+                    <div class="p-2">
+                        <span t-field="doc.applicant_1.name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>
+                    </div>
+                    <div class="mb-3 p-2">
+                        <!-- <span t-field="doc.applicant_1" t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/> -->
+                        <t t-if="doc.applicant_1.street"><span t-field="doc.applicant_1.street"/><br/></t>
+                        <t t-if="doc.applicant_1.street2"><span t-field="doc.applicant_1.street2"/><br/></t>
+                        <t t-if="doc.applicant_1.city"><span t-field="doc.applicant_1.city"/><br/></t>
+                        <t t-if="doc.applicant_1.state_id"><span t-field="doc.applicant_1.state_id"/><br/></t>
+                        <t t-if="doc.applicant_1.zip"><span t-field="doc.applicant_1.zip"/><br/></t>
+                        <t t-if="doc.applicant_1.country_id"><span t-field="doc.applicant_1.country_id"/></t>
+                    </div>
+
+                    <div class="mb-4 p-2">
+                        <div class="mb-2">
+                            <span>Applicants</span>: <span t-field="doc.applicant_1.name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>
+                        </div>
+                        <div class="mb-2">
+                            <span>Application Number</span>: <span t-field="doc.name"/>
+                        </div>
+                        <div class="mb-2">
+                            <span>Property Address</span>: <t t-if="doc.street"><span t-field="doc.street"/>, </t><t t-if="doc.street2"><span t-field="doc.street2"/>, </t><t t-if="doc.city"><span t-field="doc.city"/>, </t><t t-if="doc.state_id"><span t-field="doc.state_id"/>, </t><t t-if="doc.zip"><span t-field="doc.zip"/>, </t><t t-if="doc.country_id"><span t-field="doc.country_id"/></t>
+                        </div>
+                        <div class="mb-2">
+                            <span>Date</span>: <span t-field="doc.date_of_offer"/>
+                        </div>
+                    </div>
+                    <div class="mt-2 p-2">
+                        <div class="mb-3">
+                            Dear <span t-field="doc.applicant_1.first_name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.first_name"/></t>,
+                        </div>
+                        <div class="mb-3">
+                            I am pleased to confirm that <span t-field="doc.company_id.name"/> (the ‘Credit Union’) has approved your application for a mortgage, secured on the above property subject to the conditions set out in this Letter of Offer together with the Special Conditions of Offer and the General Home Loan Conditions (both enclosed).
+                        </div>
+                        <div class="mb-3">
+                            A copy of this Letter of Offer and mortgage documentation has been sent to your solicitor. If you wish to accept this offer, you must sign the enclosed Form of Acceptance within three months of the date of this letter. For your benefit the Acceptance should be signed in the presence of your solicitor. The Credit Union reserves the right to withdraw the loan at any time prior to its draw down.
+                        </div>
+                        <div class="mb-3">
+                            It is important that you read, understand and take independent legal advice on all of the terms and conditions that apply to this loan. These are contained in this Letter of Offer, the Special Conditions of Offer, the General Home Loan Conditions and the Mortgage Documentation. Please note that prior to draw down of the loan, you must comply with all of the preconditions set out in the Special Conditions of Offer.
+                        </div>
+                        <div class="mb-3">
+                            Thank you for choosing us and we will be delighted to complete the loan as soon as possible. If you have any questions, please do not hesitate to contact us and we will be happy to help.
+                        </div>
+                        <div class="mb-4">
+                            Your sincerely,
+                        </div>
+                        <div class=" mt-4 mb-2">
+                            _ _ _ _ _ _ _ _ _ _ _ _ _
+                        </div>
+                        <div>
+                            <strong>CEO</strong>
+                        </div>
+                    </div>
+                    <div class="text-center" style="page-break-before:always;">
+                        <strong>PARTICULARS OF HOME LOAN</strong>
+                    </div>
+                    <div class="p-2 mb-2">
+                        <div class="row mb-0">
+                            <div class="col-3 border border-right-0 border-dark">
+                                Applicant(s) Name
+                            </div>
+                            <div class="col-9 border border-dark">
+                                <span t-field="doc.applicant_1.name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>
+                            </div>
+                        </div>
+                        <div class="row mt-0">
+                            <div class="col-3 border border-right-0 border-top-0 border-dark">
+                                Mortgage Property
+                            </div>
+                            <div class="col-9 border border-top-0 border-dark">
+                                <t t-if="doc.street"><span t-field="doc.street"/>, </t><t t-if="doc.street2"><span t-field="doc.street2"/>, </t><t t-if="doc.city"><span t-field="doc.city"/>, </t><t t-if="doc.state_id"><span t-field="doc.state_id"/>, </t><t t-if="doc.zip"><span t-field="doc.zip"/>, </t><t t-if="doc.country_id"><span t-field="doc.country_id"/></t>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-sm">
+                        <tr>
+                            <td class="text-uppercase text-center" colspan="3">Important Information As at <span t-field="doc.date_of_offer"/></td>
+                        </tr>
+                        <tr>
+                            <td>1.</td>
+                            <td>Amount of Credit Advanced</td>
+                            <td>€ <span t-field="doc.mortgage_amount"/></td>
+                        </tr>
+                        <tr>
+                            <td>2.</td>
+                            <td>Period of Agreement (Years – Months)</td>
+                            <td><span t-field="doc.mortgrage_term_year"/> years <span t-field="doc.mortgrage_term_months"/> months</td>
+                        </tr>
+                        <tr>
+                            <td>3.</td>
+                            <td>Number of Repayment Instalments</td>
+                            <td><span t-field="doc.esis_no_of_repayment"/></td>
+                        </tr>
+                        <tr>
+                            <td>4.</td>
+                            <td>Amount of Each Instalment</td>
+                            <td>€ <t t-if="doc.mortgage_type == 'variable_rate'"><span t-field="doc.repayment_at_variable" t-options="{'widget': 'float', 'precision': 2}"/></t><t t-if="doc.mortgage_type == 'fixed_variable_rate'"><span t-field="doc.fixed_term_payment" t-options="{'widget': 'float', 'precision': 2}"/></t></td>
+                        </tr>
+                        <tr>
+                            <td>5.</td>
+                            <td>Total Amount Repayable</td>
+                            <td>€ <span t-field="doc.esis_total_repaid"/></td>
+                        </tr>
+                        <tr>
+                            <td>6.</td>
+                            <td>Cost of Credit (5 minus 1)</td>
+                            <td>€ <span t-field="doc.esis_cost_of_credit"/></td>
+                        </tr>
+                        <tr>
+                            <td>7.</td>
+                            <td>Interest Rate (%) </td>
+                            <td><span t-field="doc.interest_rate"/></td>
+                        </tr>
+                        <tr>
+                            <td>8.</td>
+                            <td>Annual Percentage Rate of Charge (APRC)* (%)</td>
+                            <td><span t-field="doc.esis_aprc"/></td>
+                        </tr>
+                        <tr>
+                            <td>9.</td>
+                            <td>Effect on amount of Instalment of 1% increase in standard mortgage variable interest rate</td>
+                            <td>€ <t t-if="doc.esis_payment_frequency == 'monthly'"><span t-field="doc.esis_monthly_repayment_1"/></t> <t t-if="doc.esis_payment_frequency == 'weekly'"><span t-field="doc.esis_weekly_repayment_1"/></t> <t t-if="doc.esis_payment_frequency == 'fortnightly'"><span t-field="doc.esis_fortnightly_repayment_1"/></t></td>
+                        </tr>
+                        <tr>
+                            <td>10.</td>
+                            <td>Effect on amount of Instalment of 2% increase in standard mortgage variable interest rate</td>
+                            <td>€ <t t-if="doc.esis_payment_frequency == 'monthly'"><span t-field="doc.esis_monthly_repayment_2"/></t> <t t-if="doc.esis_payment_frequency == 'weekly'"><span t-field="doc.esis_weekly_repayment_2"/></t> <t t-if="doc.esis_payment_frequency == 'fortnightly'"><span t-field="doc.esis_fortnightly_repayment_2"/></t></td>
+                        </tr>
+                        <tr>
+                            <td>11.</td>
+                            <td>Market Value per Valuation Report</td>
+                            <td>€ <span t-field="doc.certified_property_value"/></td>
+                        </tr>
+                        <tr>
+                            <td>12.</td>
+                            <td>Loan to Value (LTV)</td>
+                            <td><span t-esc="'%.2f' % doc.loan_to_value"/></td>
+                        </tr>
+                        <tr>
+                            <td>13.</td>
+                            <td>Loan to Income (LTI)</td>
+                            <td><span t-esc="'%.2f' % doc.loan_to_income_ratio"/></td>
+                        </tr>
+                        <tr>
+                            <td>14.</td>
+                            <td>Purpose of Loan**</td>
+                            <td><span t-field="doc.purpose_of_mortgage"/></td>
+                        </tr>
+                    </table>
+                    <div class="mb-4 p-2">
+                        <span>*Please note that this rate may change prior to drawdown of the mortgage.</span><br/>
+                        <span>**This is the purpose for which you may use this loan.</span>
+                        
+                    </div>
+                    <div style="display:table;">
+                        <div class="border border-dark p-2 mb-4">
+                            <strong class="text-uppercase">
+                                WARNING: The payment rates on this housing loan may be adjusted by the lender from time to time
+                            </strong>
+                        </div>
+                    </div>
+                    <div style="display:table;">
+                        <div class="border border-dark p-2 mb-4">
+                            <strong class="text-uppercase">
+                                    WARNING: If you do not meet the repayments on your credit agreement, your account will go into arrears. this may affect your credit rating, which may limit your ability to access credit in the future. The possible implications and effects of missing the scheduled repayments in relation to this credit/ loan (if approved) are: 
+                                    <div class="px-3">
+                                        - Your account may go into arrears.<br/>
+                                        - Your credit rating may be affected.<br/>
+                                        - Your loan may become repayable on demand.<br/>
+                                        - Ultimately, you may lose your home.
+                                    </div>
+                            </strong>
+                        </div>
+                    </div>
+
+                    <!-- SAM General Terms and Conditions  -->
+                    <t t-if="doc.user_needs_general_conditions">
+                        <div style="page-break-before:always;"/>
+                        <span t-raw="doc.general_terms_and_conditions"/>
+                        <!-- Special Conditions  -->
+                        <center style="page-break-before:always;">
+                            <h6>SPECIAL CONDITIONS OF OFFER</h6>
+                            <p>Please note that prior to draw down of the loan, you must comply with all of the preconditions set out below;</p> 
+                        </center>
+                    </t>
+                    <t t-else="">
+                        <center>
+                            <h6>SPECIAL CONDITIONS OF OFFER</h6>
+                            <p>Please note that prior to draw down of the loan, you must comply with all of the preconditions set out below;</p> 
+                        </center>
+                    </t>
+                    <!-- Special Conditions  -->
+                    <span t-raw="doc.body_special_conditions"/>
+
+                    <!-- Form of Acceptance  -->
+                    <div class="text-center mb-2" style="page-break-before:always;">
+                        <strong class="text-uppercase">Form of Acceptance</strong>
+                    </div>
+                    <div>
+                        <strong>Applicants: </strong><span t-field="doc.applicant_1.name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>
+                    </div>
+                    <div>
+                        <strong>Date of Offer: </strong><span t-field="doc.date_of_offer"/>
+                    </div>
+                    <div class="mt-4">
+                        <strong>
+                            The Credit Union recommends that you seek your solicitor’s advice in relation to the Letter of Offer, the General Home Loan Conditions, Special Conditions of Offer and any other attached documents. For your benefit, the Acceptance should be signed in the presence of your solicitor. One copy of the Form of Acceptance should be returned to the Credit Union once completed together with the other attached documents, with no documents detached. The other copy should be retained by you for your records.
+                        </strong>
+                    </div>
+                    <div class="mt-3">
+                        <div class="mb-1">
+                            I/We the undersigned, represent and warrant that I/We are capable of assessing and understanding the terms, conditions and risks of the facility and the required security as set out in the Letter of Offer above and I am/We are satisfied to agree to such terms, conditions and to assume such risks
+                        </div>
+                        <div class="mb-1">
+                            I/We the undersigned accept the offer of a loan made by the Credit Union on foot of my/our loan application form signed by me/us and on the terms and conditions set out in:
+                            <ol class="pl-4 pt-2">
+                                <li>The Letter of Offer</li>
+                                <li>The Particulars of Loan</li>
+                                <li>The Special Conditions of Offer</li>
+                                <li>The General Home Loan Conditions</li>
+                                <li>The European Standard Information Sheet</li>
+                                <li>The Standard Form of Mortgage</li>
+                                <li>The Credit Union’s Deed of Assignment of Life Policy </li>
+                            </ol>
+                            <span>copies of which I/We have received.</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        I/We hereby irrevocably authorise and direct my/our solicitor to furnish to the Credit Union, or to their appointed solicitors, an undertaking in the Law Society’s standard form and to comply with that undertaking to procure the registration of a first legal charge.
+                    </div>
+                    <table class="table table-borderless mt-4">
+                        <colgroup>
+                            <col span="1" style="width:20%;"/>
+                            <col span="1" style="width:30%;"/>
+                            <col span="1" style="width:20%;"/>
+                            <col span="1" style="width:30%;"/>
+                        </colgroup>
+                        <tr>
+                            <td>Signed:</td>
+                            <td>__________________________________________</td>
+                            <td>Signed:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>Date:</td>
+                            <td>__________________________________________</td>
+                            <td>Date:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>Witness:</td>
+                            <td>__________________________________________</td>
+                            <td>Witness:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>Name of Solicitor:</td>
+                            <td>__________________________________________</td>
+                            <td>Name of Solicitor:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>Solicitor's Signature:</td>
+                            <td>__________________________________________</td>
+                            <td>Solicitor's Signature:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>Principal/ Partner:</td>
+                            <td>__________________________________________</td>
+                            <td>Principal/ Partner:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>Address Of Firm:</td>
+                            <td>__________________________________________</td>
+                            <td>Address Of Firm:</td>
+                            <td>__________________________________________</td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_letter_of_offer">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="appsmod2.report_letter_of_offer_document" t-lang="doc.applicant_1.lang"/>
+                    </t>
+                </t>
+		    </t>
+		</template>
+    </data>
+</odoo>

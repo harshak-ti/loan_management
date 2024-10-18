@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="application_view_tree" model="ir.ui.view">
+            <field name="name">application.view.tree</field>
+            <field name="model">application</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" optional="show"/>
+                    <field name="applicant_1" optional="hide"/>
+                    <field name="applicant_1_age" optional="hide"/>
+                    <field name="applicant_2" optional="hide"/>
+                    <field name="applicant_2_age" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                    <field name="state" optional="show"/>
+                    <field name="assignee" optional="show"/>
+                    <field name="write_date" optional="hide"/>
+                    <field name="date_of_offer" optional="hide"/>
+                    <field name="mortgage_amount" optional="hide"/>
+                    <field name="mortgage_product_id" optional="hide"/>
+                    <field name="mortgrage_term_year" optional="hide"/>
+                    <field name="certified_property_value" optional="hide"/>
+                    <field name="esis_aprc" optional="hide"/>
+                    <field name="loan_to_income_ratio" optional="hide"/>
+                    <field name="loan_to_value" optional="hide"/>
+                    <field name="mortgage_service_ratio" optional="hide"/>
+                    <field name="self_employed_1" optional="hide"/>
+                    <field name="self_employed_2" optional="hide"/>
+                    <field name="total_basic_income_1" optional="hide"/>
+                    <field name="total_basic_income_2" optional="hide"/>
+                    <field name="esis_cost_of_credit" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="application_view_form" model="ir.ui.view">
+            <field name="name">application.view.form</field>
+            <field name="model">application</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_limits_eligible" string="Limits Eligible" type="object" invisible="state not in ['draft','limits_not_eligible']" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary" />
+                        <button name="action_limits_not_eligible" string="Limits Not Eligible" type="object" invisible="state != 'draft'" groups="appsmod2.group_appsmod2_loan_officer" />
+                        <button name="action_pre_application_complete" string="Pre-Application Complete" type="object" invisible="state not in ['limits_eligible','pre_application_not_complete']" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary"/>
+                        <button name="action_pre_application_not_complete" string="Pre-Application Not Complete" type="object" invisible="state != 'limits_eligible'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary"/>
+                        <button name="action_request_application" string="Request Application" type="object" invisible="state != 'pre_application_complete'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary" />
+                        <button name="action_application_pack_returned" string="Application Pack Returned" type="object" invisible="state != 'application_requested'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary" />
+                        <button name="action_consent_signed" string="Consent Signed" type="object" invisible="state != 'application_pack_returned'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary" />
+                        <button name="action_application_form_received" string="Form Received" type="object" invisible="state != 'consent_signed'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary"/>
+                        <button name="action_submit_to_external" string="Submit to External Assessor" type="object" invisible="state != 'application_form_received'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary" />
+                        <button name="action_submit_for_internal_assessment" string="Submit for Internal Assessment" type="object" invisible="state not in ['external_assessor','application_form_received']" groups="appsmod2.group_appsmod2_loan_officer,appsmod2.group_appsmod2_external_user" class="btn-primary" />
+                        <button name="action_check_application" string="Check Application" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state not in ['ready_for_assessment', 'valuation_report', 'property_overvalued']" class="btn-primary"/>
+                        <button name="action_funds_drawn" string="Funds Drawn Down" type="object" invisible="state != 'accepted'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary"/>
+                        <button name="action_recalculate_dob" string="Recalculate DOB" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state not in ['draft','limits_eligible','pre_application_not_complete','limits_not_eligible','pre_application_complete']"/>
+                        <button name="action_accept_application" string="Accept Application" type="object" invisible="state != 'submit'" groups="appsmod2.group_appsmod2_loan_officer" class="btn-primary"/>
+                        <button name="action_move_back" string="Move Back" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state in ('decline', 'funds_drawn_down', 'draft', 'accepted', 'limits_not_eligible')"/>
+
+                        <button name="action_print_principal_approval_letter" string="Print In Principle Letter" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state in ['draft', 'limits_eligible', 'limits_not_eligible', 'pre_application_not_complete']"/>
+                        <button name="action_print_affordability_calculator" string="Affordability Calculator" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state in ['draft', 'limits_eligible', 'limits_not_eligible', 'pre_application_not_complete']"/>
+                        <button name="action_print_letter_of_offer_2020" string="Offer Letter" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state not in ['accepted', 'funds_drawn_down']"/>
+                        <button name="action_print_esis_2020" string="ESIS" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state not in ['accepted', 'funds_drawn_down']"/>
+                        <button name="action_decline" string="Decline" type="object" groups="appsmod2.group_appsmod2_loan_officer" invisible="state in ['decline', 'draft', 'accepted', 'funds_drawn_down', 'limits_not_eligible']" />
+                        <button name="action_print_decline_letter" string="Decline Letter" invisible="state != 'decline'" type="object" groups="appsmod2.group_appsmod2_loan_officer" />
+
+                        <button name="action_print_drawdown_letter" string="Print DrawDown Letter" invisible="state != 'funds_drawn_down'" type="object" groups="appsmod2.group_appsmod2_loan_officer"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,limits_eligible,pre_application_complete,application_requested"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group class="mb-0 text-nowrap">
+                            <group>
+                                <field name="first_time_buyer" readonly="state in ('decline', 'accepted', 'funds_drawn_down')"/>
+                                <field name="mortgage_product_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                                <field name="mortgage_type" readonly="1" force_save="1"/>
+                                <field name="fixed_interest_rate" invisible="1" readonly="1" force_save="1"/>
+                                <field name="interest_rate" invisible="1" readonly="1" force_save="1"/>
+                                <field name="assignee" readonly="1"/>
+                                <field name="company_id" readonly="1" groups="base.group_multi_company" invisible="1"/>
+                                <field name="date_of_offer" invisible="state not in ('accepted', 'funds_drawn_down')" readonly="1"/>
+                                <field name="date_of_offer_plus_1" invisible="1"/>
+                                <field name="date_of_offer_plus_2" invisible="1"/>
+
+                            </group>
+                            <group>
+                                <field name="mortgrage_term_year" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="mortgrage_term_months" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="mortgage_amount" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="property_value" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </group>
+                        </group>
+                        <group col="3" class="my-0">
+                            <group>
+
+                                <field name="applicant_1" domain="[('id', '!=', applicant_2)]" required="1" readonly="state != 'draft'" options="{'no_quick_create': True}"/>
+                                <field name="applicant_1_age" string="Age"/>
+                                <field name="applicant_1_age_end_of_term" string="Age: End of Term"/>
+                                <field name="self_employed_1" string="Self Employed?" readonly="hide_load_checklist or state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="single" readonly="state in ('decline','accepted','funds_drawn_down')" invisible="state in ('draft','limits_eligible','limits_not_eligible','pre_application_not_complete')"/>
+                                <field name="no_of_dependents" readonly="state in ('decline','accepted','funds_drawn_down')" invisible="state in ('draft','limits_eligible','limits_not_eligible','pre_application_not_complete')"/>
+                                <field name="ndi_monthly" invisible="state in ('draft','limits_eligible','limits_not_eligible','pre_application_not_complete')"/>
+                            </group>
+                            <group>
+                                <group style="width:100%;" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                    <label for="street" string="Address of the Property to be Mortgaged" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                    <div class="o_address_format" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                        <field name="street" placeholder="Street..." class="o_address_street" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="street2" placeholder="Street 2..." class="o_address_street" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="city" placeholder="City" class="o_address_city" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="zip" placeholder="EIRCODE" class="o_address_zip" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="state_id" placeholder="County" class="o_address_state" options='{"no_open": True, "no_create": True}' readonly="state in ('decline','accepted','funds_drawn_down')" domain="[('country_id','=','Ireland')]"/>
+                                        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}' readonly="state in ('decline','accepted','funds_drawn_down')" domain="[('name','=','Ireland')]"/>
+                                    </div>
+                                    <field name="purpose_of_mortgage" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                    <field name="ber_rating" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                    <field name="ber_cert_no" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                    <field name="mprn_no" invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                </group>
+                                <group string="Repayments" class="text-nowrap" style="width:100%;">
+                                    <field name="esis_payment_frequency" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('external_assessor','ready_for_assessment','valuation_report','property_overvalued','submit','decline','accepted','funds_drawn_down')"/>
+                                    <field name="monthly_repayment" string="Regular Repayment" invisible="mortgage_type != 'variable_rate' or esis_payment_frequency != 'monthly'"/>
+                                    <field name="esis_weekly_repayment" string="Regular Repayment" invisible="mortgage_type != 'variable_rate' or esis_payment_frequency != 'weekly'"/>
+                                    <field name="esis_fortnightly_repayment" string="Regular Repayment" invisible="mortgage_type != 'variable_rate' or esis_payment_frequency != 'fortnightly'"/>
+                                    <field name="fixed_term_payment" string="Repayment At Fixed Term" invisible="mortgage_type != 'fixed_variable_rate'"/>
+                                    <field name="term_at_starting_rate" string="Term At Fixed Rate" readonly="1" invisible="mortgage_type != 'fixed_variable_rate'" force_save="1"/>
+                                    <field name="repayment_at_variable" string="Repayment At Variable" invisible="mortgage_type != 'fixed_variable_rate'"/>
+                                </group>
+                            </group>
+                            <group>
+
+                                <field name="applicant_2" domain="[('id', '!=', applicant_1)]" invisible="state not in ('draft','limits_not_eligible')" readonly="state != 'draft'" options="{'no_quick_create': True}"/>
+                                <field name="applicant_2_age" string="Age" invisible="applicant_2 == False"/>
+                                <field name="applicant_2_age_end_of_term" string="Age: End of Term" invisible="applicant_2 == False"/>
+                                <field name="self_employed_2" string="Self Employed?" invisible="applicant_2 == False" readonly="hide_load_checklist or state in ('decline','accepted','funds_drawn_down')"/>
+                            </group>
+                        </group>
+                        <group col="3" class="my-0 text-nowrap">
+                            <group>
+                                <field name="total_basic_income_1" string="Total Basic Income" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_net_basic_income_1" string="Total Net Basic Income" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_other_income_1" string="Total Other Net Income" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_income"/>
+                                <field name="other_income_counted" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="nd2_income_counted" invisible="applicant_2 == False or state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_sustainable_income" invisible="state in ('draft','limits_not_eligible')"/>
+                                <field name="allowable_monthly_income" invisible="state in ('draft','limits_not_eligible')"/>
+                            </group>
+                            <group string="Underwriting Metrics">
+                                <field name="show_image_1" invisible="1"/>
+                                <label for="loan_to_value"/>
+                                <div>
+                                    <field name="loan_to_value" class="mr-4" style="width:30%"/>
+                                    <field name="image_red_1" widget="image" style="display:inline;" nolabel="1" invisible="show_image_1 == True"/>
+                                    <field name="image_green_1" widget="image" style="display:inline;" nolabel="1" invisible="show_image_1 == False"/>
+                                </div>
+                                <field name="show_image_2" invisible="1"/>
+                                <label for="loan_to_income_ratio"/>
+                                <div>
+                                    <field name="loan_to_income_ratio" class="mr-4" style="width:30%"/>
+                                    <field name="image_red_2" widget="image" style="display:inline;" nolabel="1" invisible="show_image_2 == True"/>
+                                    <field name="image_green_2" widget="image" style="display:inline;" nolabel="1" invisible="show_image_2 == False"/>
+                                </div>
+                                <field name="show_image_3" invisible="1"/>
+                                <label for="mortgage_service_ratio" invisible="state in ('draft','limits_not_eligible')" />
+                                <div>
+                                    <field name="mortgage_service_ratio" invisible="state in ('draft','limits_not_eligible')" class="mr-4" style="width:30%"/>
+                                    <field name="image_red_3" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_3 == True"/>
+                                    <field name="image_green_3" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_3 == False"/>
+                                </div>
+                                <field name="show_image_4" invisible="1"/>
+                                <label for="total_debt_service_ratio" invisible="state in ('draft','limits_not_eligible')"/>
+                                <div>
+                                    <field name="total_debt_service_ratio" invisible="state in ('draft','limits_not_eligible')" class="mr-4" style="width:30%"/>
+                                    <field name="image_red_4" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_4 == True"/>
+                                    <field name="image_green_4" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_4 == False"/>
+                                </div>
+                                <field name="net_disposable_inc" invisible="state in ('draft','limits_not_eligible')"/>
+                                <field name="show_image_5" invisible="1"/>
+                                <label for="gift_to_deposit" invisible="state in ('draft','limits_not_eligible')"/>
+                                <div>
+                                    <field name="gift_to_deposit" invisible="state in ('draft','limits_not_eligible')" class="mr-4" style="width:30%"/>
+                                    <field name="image_red_5" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_5 ==  True"/>
+                                    <field name="image_green_5" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_5 == False"/>
+                                </div>
+                                <field name="max_lend_facility" invisible="state in ('draft','limits_not_eligible')"/>
+                            </group>
+                            <group>
+                                <field name="total_basic_income_2" string="Total Basic Income" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_net_basic_income_2" string="Total Net Basic Income" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_other_income_2" string="Total Other Net Income" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </group>
+                        </group>
+                        <group col="3" class="my-0 text-nowrap">
+                            <group>
+                                <label for="applicant_2_p60" string="Employment Detail Summary Income for Last Year" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')" style="white-space:normal !important;"/>
+                                <field name="applicant_1_p60" nolabel="1" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="applicant_1_ann_pen" string="Annual Pension Contribution" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="applicant_1_exi_mor" string="Existing Mortgage Commitments" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="applicant_1_rental_income" string="Rental Income" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="debt_repay" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="property_co" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="childcare" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="maintenance" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="total_short_term" invisible="state in ('draft','limits_not_eligible')" class="text-nowrap"/>
+                            </group>
+                            <group string="Stress Test" class="text-nowrap" invisible="state in ('draft','limits_not_eligible')">
+                                <div/>
+                                <field name="monthly_income_reduced" invisible="state in ('draft','limits_not_eligible')"/>
+                                <field name="interest_rate_increase" invisible="state in ('draft','limits_not_eligible')" readonly="1"/>
+                                <field name="stressed_income" invisible="state in ('draft','limits_not_eligible')"/>
+                                <field name="stressed_allowable_income" invisible="state in ('draft','limits_not_eligible')"/>
+                                <field name="stressed_monthly_repayment" invisible="state in ('draft','limits_not_eligible')"/>
+                                <field name="show_image_8" invisible="1"/>
+                                <label for="stressed_mortgage_service_ratio" invisible="state in ('draft','limits_not_eligible')"/>
+                                <div>
+                                    <field name="stressed_mortgage_service_ratio" invisible="state in ('draft','limits_not_eligible')" class="mr-4"/>
+                                    <field name="image_red_8" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible')or show_image_8 ==  True"/>
+                                    <field name="image_green_8" widget="image" style="display:inline;" nolabel="1" invisible="state in ('draft','limits_not_eligible') or show_image_8 == False"/>
+                                </div>
+                                <field name="show_image_9" invisible="1"/>
+                                <label for="stressed_total_debt_service_ratio" invisible="state in ('draft','limits_not_eligible')"/>
+                                <div>
+                                    <field name="stressed_total_debt_service_ratio" invisible="state in ('draft','limits_not_eligible')" class="mr-4"/>
+                                    <field name="image_red_9" widget="image" style="display:inline;" nolabel="1" options="{'preview_image': 'image_red_9'}" invisible="state in ('draft','limits_not_eligible') or show_image_9 == True"/>
+                                    <field name="image_green_9" widget="image" nolabel="1" style="display:inline;" options="{'preview_image': 'image_green_9'}" invisible="state in ('draft','limits_not_eligible') or show_image_9 == False"/>
+                                </div>
+                                <field name="stressed_net_disposable_income" invisible="state in ('draft','limits_not_eligible')"/>
+                            </group>
+                            <group>
+                                <label for="applicant_2_p60" string="Employment Detail Summary Income for Last Year" invisible="applicant_2 == False or state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')" style="white-space:normal !important;"/>
+                                <field name="applicant_2_p60" nolabel="1" invisible="applicant_2 == False or state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="applicant_2_ann_pen" string="Annual Pension Contribution" invisible="applicant_2 == False or state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="applicant_2_exi_mor" string="Existing Mortgage Commitments" invisible="applicant_2 == False or state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="applicant_2_rental_income" string="Rental Income" invisible="applicant_2 == False or state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </group>
+                        </group>
+                        <group col="3" class="my-0 text-nowrap">
+                            <group>
+                                <field name="gifts_towards_deposit" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="values_of_gifts" invisible="state in ('draft','limits_not_eligible') or gifts_towards_deposit == 'no'" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="gifts_letter_received" invisible="state in ('draft','limits_not_eligible') or gifts_towards_deposit == 'no'" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="contribution_to_valuation" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="contribution_to_revaluation" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <field name="once_off_costs" invisible="state in ('draft','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </group>
+                            <group string="ESIS" invisible="state not in ('accepted','funds_drawn_down')">
+                                <field name="esis_no_of_repayment" invisible="state not in ('accepted','funds_drawn_down')"/>
+                                <field name="esis_total_repaid" invisible="state not in ('accepted','funds_drawn_down')"/>
+                                <field name="esis_cost_of_credit" invisible="state not in ('accepted','funds_drawn_down')"/>
+                                <field name="esis_cost_per_1" invisible="state not in ('accepted','funds_drawn_down')"/>
+                                <field name="esis_interest_rate" invisible="state not in ('accepted','funds_drawn_down')"/>
+                                <field name="esis_monthly_repayment_1" invisible="1"/>
+                                <field name="esis_monthly_repayment_2" invisible="1"/>
+                                <field name="esis_weekly_repayment" invisible="1"/>
+                                <field name="esis_weekly_repayment_1" invisible="1"/>
+                                <field name="esis_weekly_repayment_2" invisible="1"/>
+                                <field name="esis_fortnightly_repayment" invisible="1"/>
+                                <field name="esis_fortnightly_repayment_1" invisible="1"/>
+                                <field name="esis_fortnightly_repayment_2" invisible="1"/>
+                                <field name="avg_repayment" invisible="1"/>
+                                <field name="avg_repayment_plus1" invisible="1"/>
+                                <field name="avg_rate" invisible="1"/>
+                                <field name="esis_aprc" invisible="state not in ('accepted','funds_drawn_down')"/>
+                                <field name="esis_aprc_1" invisible="state not in ('accepted','funds_drawn_down')"/>
+                            </group>
+                        </group>
+                        <group class="my-0">
+                            <group>
+                                <field name="applicant_1_eu_citizen" string='EU Citizen' invisible="state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                <!-- <field name="user_needs_general_conditions" /> -->
+                                <field name="user_needs_general_conditions" invisible="state not in ['ready_for_assessment', 'valuation_report', 'property_overvalued', 'submit', 'accepted', 'funds_drawn_down', 'decline']"/>
+                            </group>
+                            <group>
+                                <field name="applicant_2_eu_citizen" string='EU Citizen' invisible="applicant_2 == False or state in  ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </group>
+                        </group>
+                        <group name="Invisible Fields">
+                            <field name="show_cover_note" invisible="1"/>
+                            <field name="show_assessment" invisible="1" />
+                            <field name="show_special" invisible="1" />
+                            <field name="field_self_check" invisible="0"/>
+                            <field name="field_paye_check" invisible="0"/>
+                            <field name="field_mry_tab_check" invisible="1"/>
+                            <field name="hide_load_checklist" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Decline Letter" invisible="state != 'decline'" readonly="True">
+                                <group>
+                                    <field name="decline_reason" readonly="1"/>
+                                    <field name="decline_message" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Assessment" invisible="show_assessment == False or state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible','application_pack_returned','external_assessor','application_form_received')" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                <group>
+                                    <group string="Applicant 1">
+                                        <span class="o_form_label">Hover your mouse over the question to see the help text."</span>
+                                        <field name="character_demonstrated" string="Is Character Demonstrated?" required="1" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="affordablity_established" string="Is Affordability Established?" required="1" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="secure_employment" string="Secure Employment?" required="1" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="certified_value" required="1" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="certified_property_value" invisible="certified_value == 'no'" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                    </group>
+                                    <group string="Applicant 2" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                        <span class="o_form_label">Hover your mouse over the question to see the help text."</span>
+                                        <field name="character_demonstrated_applicant_2" required="1" string="Is Character Demonstrated?" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="affordablity_established_applicant_2" required="1" string="Is Affordability Established?" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        <field name="secure_employment_applicant_2" required="1" string="Secure Employment?" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Special Conditions" invisible="show_special == False or state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible','application_pack_returned','application_form_received','external_assessor')" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                <field name="body_special_conditions" widget="html" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </page>
+                            <page string="SAM General Terms &amp; Conditions" invisible="user_needs_general_conditions == False or state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible','application_pack_returned','application_form_received','external_assessor')" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                <field name="general_terms_and_conditions" widget="html" readonly="1"/>
+                            </page>
+                            <page string="Cover Note" invisible="show_cover_note == False or state in ('draft','limits_eligible','pre_application_complete','pre_application_not_complete','application_requested','limits_not_eligible','application_pack_returned')" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                <field name="body_html" widget="html" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                            </page>
+                            <page string="Check List" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                <group string="Jointly Applicable">
+                                    <field name="jointly_applicable_line" nolabel="0" widget="section_and_note_one2many" readonly="state in ('decline','accepted','funds_drawn_down')" context="{'application_id': active_id}">
+                                        <tree editable="bottom" create="0" delete="0">
+                                            <field name="name" readonly="1"/>
+                                            <field name="provided" widget="boolean_button"/>
+                                            <field name="acceptable" widget="boolean_button"/>
+                                            <field name="notes" />
+                                            <field name="application_id" invisible="1"/>
+                                            <field name="sequence" invisible="1"/>
+                                        </tree>
+                                        <form>
+                                            <field name="name" readonly="1" string="Name"/>
+                                            <group>
+                                                <group>
+                                                    <field name="provided" widget="boolean_button"/>
+                                                    <field name="acceptable" widget="boolean_button"/>
+                                                </group>
+                                                <group>
+                                                    <field name="notes" />
+                                                </group>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+
+                                <group string="Applicable Individually">
+                                    <group string="Applicant 1">
+                                        <group>
+                                            <field name="applicant_1_credit_risk" string="Are Credit Checks Acceptable?" invisible="state in ('draft','limits_eligible','limits_not_eligible','pre_application_complete','pre_application_not_complete','application_requested')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        </group>
+                                        <field name="checklist_applicable_applicant_line1" nolabel="0" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                            <tree editable="bottom" create="0" delete="0">
+                                                <field name="name" readonly="1"/>
+                                                <field name="provided" widget="boolean_button"/>
+                                                <field name="acceptable" widget="boolean_button"/>
+                                                <field name="notes"/>
+                                                <field name="sequence" invisible="1"/>
+
+
+                                            </tree>
+                                            <form >
+                                                <field name="name" readonly="0" string="Name"/>
+                                                <group>
+                                                    <group>
+                                                        <field name="provided" widget="boolean_button"/>
+                                                        <field name="acceptable" widget="boolean_button"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="notes"/>
+
+                                                    </group>
+                                                </group>
+                                            </form>
+                                        </field>
+                                    </group>
+
+                                    <group string="Applicant 2" invisible="applicant_2 == False">
+                                        <group>
+                                            <field name="applicant_2_credit_risk" string="Are Credit Checks Acceptable?" invisible="state in ('draft','limits_eligible','limits_not_eligible','pre_application_complete','pre_application_not_complete','application_requested')" readonly="state in ('decline','accepted','funds_drawn_down')"/>
+                                        </group>
+                                        <field name="checklist_applicable_applicant_line2" nolabel="1" readonly="state in ('decline','accepted','funds_drawn_down')" invisible="applicant_2 == False">
+                                            <tree editable="bottom" create="0" delete="0">
+                                                <field name="name" readonly="1"/>
+                                                <field name="provided" widget="boolean_button"/>
+                                                <field name="acceptable" widget="boolean_button"/>
+                                                <field name="notes"/>
+                                                <field name="sequence" invisible="1"/>
+                                            </tree>
+                                            <form >
+                                                <field name="name" readonly="0" string="Name"/>
+                                                <group>
+                                                    <group>
+                                                        <field name="provided" widget="boolean_button"/>
+                                                        <field name="acceptable" widget="boolean_button"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="notes"/>
+
+                                                    </group>
+                                                </group>
+                                            </form>
+                                        </field>
+                                    </group>
+                                </group>
+
+
+                                <group string="Self Employed" invisible="field_self_check == False">
+                                    <group string="Applicant 1" invisible="self_employed_1 == 'no'">
+                                        <field name="checklist_self_applicable_applicant_line1" nolabel="0" widget="section_and_note_one2many" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                            <tree editable="bottom" create="0" delete="0">
+                                                <field name="name" readonly="1"/>
+                                                <field name="provided" widget="boolean_button"/>
+                                                <field name="acceptable" widget="boolean_button"/>
+                                                <field name="notes"/>
+                                                <field name="sequence" invisible="1"/>
+                                            </tree>
+                                            <form >
+                                                <field name="name" readonly="0" string="Name"/>
+                                                <group>
+                                                    <group>
+                                                        <field name="provided" widget="boolean_button"/>
+                                                        <field name="acceptable" widget="boolean_button"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="notes" />
+                                                    </group>
+                                                </group>
+                                            </form>
+                                        </field>
+                                    </group>
+                                    <group string="Applicant 2" invisible="applicant_2 == False or self_employed_2 == 'no'">
+                                        <field name="checklist_self_applicable_applicant_line2" nolabel="0" widget="section_and_note_one2many" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                            <tree editable="bottom" create="0" delete="0">
+                                                <field name="name" readonly="1"/>
+                                                <field name="provided" widget="boolean_button"/>
+                                                <field name="acceptable" widget="boolean_button"/>
+                                                <field name="notes"/>
+                                                <field name="sequence" />
+                                            </tree>
+                                            <form domain="[('applicant_type', '=', 'applicant1')]">
+                                                <field name="name" readonly="1" string="Name"/>
+                                                <group>
+                                                    <group>
+                                                        <field name="provided" widget="boolean_button"/>
+                                                        <field name="acceptable" widget="boolean_button"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="notes" />
+                                                    </group>
+                                                </group>
+                                            </form>
+                                        </field>
+                                    </group>
+                                </group>
+                                <group string="Paye" invisible="field_paye_check == False">
+                                    <group string="Applicant 1" invisible="self_employed_1 == 'yes'">
+                                        <field name="checklist_paye_applicable_applicant_line1" nolabel="0" widget="section_and_note_one2many" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                            <tree editable="bottom" create="0" delete="0">
+                                                <field name="name" readonly="1"/>
+                                                <field name="provided" widget="boolean_button"/>
+                                                <field name="acceptable" widget="boolean_button"/>
+                                                <field name="notes"/>
+                                                <field name="sequence" invisible="1"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name" readonly="0" string="Name"/>
+                                                <group>
+                                                    <group>
+                                                        <field name="provided" widget="boolean_button"/>
+                                                        <field name="acceptable" widget="boolean_button"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="notes" />
+                                                    </group>
+                                                </group>
+                                            </form>
+                                        </field>
+                                    </group>
+                                    <group string="Applicant 2" invisible="applicant_2 == False or self_employed_2 == 'yes'">
+                                        <field name="checklist_paye_applicable_applicant_line2" nolabel="0" widget="section_and_note_one2many" invisible="applicant_2 == False" readonly="state in ('decline','accepted','funds_drawn_down')">
+                                            <tree editable="bottom" create="0" delete="0">
+                                                <field name="name" readonly="1"/>
+                                                <field name="provided" widget="boolean_button"/>
+                                                <field name="acceptable" widget="boolean_button"/>
+                                                <field name="notes"/>
+                                                <field name="sequence" invisible="1"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name" readonly="0" string="Name"/>
+                                                <group>
+                                                    <group>
+                                                        <field name="provided" widget="boolean_button"/>
+                                                        <field name="acceptable" widget="boolean_button"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="notes" />
+                                                    </group>
+                                                </group>
+                                            </form>
+                                        </field>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="MRY Details" invisible="field_mry_tab_check == False and state in ('draft', 'limits_not_eligible')">
+                                <group string="Applicant 1" invisible="self_employed_1 == 'no'">
+                                </group>
+                                <table class="table table-hover table-bordered" invisible="self_employed_1 == 'no'">
+                                    <thead>
+                                        <tr class='text-center'>
+                                            <th></th>
+                                            <th>MRY</th>
+                                            <th>MRY-1</th>
+                                            <th>MRY-2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Net Profit</th>
+                                            <td class="text-center">
+                                                <field name="applicant_1_net_profit_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_1_net_profit_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_1_net_profit_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Depreceation</th>
+                                            <td class="text-center">
+                                                <field name="applicant_1_plus_depreceation_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_1_plus_depreceation_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_1_plus_depreceation_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Interest Paid</th>
+                                            <td class="text-center">
+                                                <field name="applicant_1_plus_interest_paid_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_1_plus_interest_paid_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_1_plus_interest_paid_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Remuneration</th>
+                                            <td class="text-center">
+                                                <field name="applicant_1_plus_remuneration_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_1_plus_remuneration_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_1_plus_remuneration_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Pension</th>
+                                            <td class="text-center">
+                                                <field name="applicant_1_plus_pension_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_1_plus_pension_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_1_plus_pension_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Trading Profit</th>
+                                            <td class="text-center">
+                                                <field name="applicant_1_trading_profit_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_1_trading_profit_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_1_trading_profit_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <group invisible="self_employed_1 == 'no'">
+                                    <group>
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Average Trading Profit</th>
+                                                    <td>
+                                                        <field name="applicant_1_average_trading_profit" nolabel="1"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Less Business Reoayments</th>
+                                                    <td>
+                                                        <field name="applicant_1_less_business_repayments" nolabel="1"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Surplus</th>
+                                                    <td>
+                                                        <field name="applicant_1_surplus" nolabel="1"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </group>
+                                </group>
+                                <group string="Applicant 2" invisible="applicant_2 == False or self_employed_2 == 'no'">
+                                </group>
+                                <table class="table table-hover table-bordered" invisible="applicant_2 ==  False or self_employed_2 == 'no'">
+                                    <thead>
+                                        <tr class='text-center'>
+                                            <th></th>
+                                            <th>MRY</th>
+                                            <th>MRY-1</th>
+                                            <th>MRY-2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Net Profit</th>
+                                            <td class="text-center">
+                                                <field name="applicant_2_net_profit_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_2_net_profit_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_2_net_profit_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Depreceation</th>
+                                            <td class="text-center">
+                                                <field name="applicant_2_plus_depreceation_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_2_plus_depreceation_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_2_plus_depreceation_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Interest Paid</th>
+                                            <td class="text-center">
+                                                <field name="applicant_2_plus_interest_paid_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_2_plus_interest_paid_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_2_plus_interest_paid_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Remuneration</th>
+                                            <td class="text-center">
+                                                <field name="applicant_2_plus_remuneration_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_2_plus_remuneration_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_2_plus_remuneration_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plus Pension</th>
+                                            <td class="text-center">
+                                                <field name="applicant_2_plus_pension_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_2_plus_pension_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_2_plus_pension_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Trading Profit</th>
+                                            <td class="text-center">
+                                                <field name="applicant_2_trading_profit_1" nolabel="1" />
+                                            </td>
+                                            <td class='text-center'>
+                                                <field name="applicant_2_trading_profit_2" nolabel="1"/>
+                                            </td>
+                                            <td >
+                                                <field name="applicant_2_trading_profit_3" nolabel="1" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <group invisible="applicant_2 == False or self_employed_2 == 'no'">
+                                    <group>
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Average Trading Profit</th>
+                                                    <td>
+                                                        <field name="applicant_2_average_trading_profit" nolabel="1"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Less Business Reoayments</th>
+                                                    <td>
+                                                        <field name="applicant_2_less_business_repayments" nolabel="1"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Surplus</th>
+                                                    <td>
+                                                        <field name="applicant_2_surplus" nolabel="1"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Documents">
+                                <group string="Jointly Applicable">
+                                    <field name="documents_uniquely_applicable_line" widget="section_and_note_one2many" readonly="state in ('decline', 'accepted', 'funds_drawn_down')" style="width:100%!important;">
+                                        <tree editable="bottom" create="1">
+                                            <field name="name"/>
+                                            <field name="data_file" filename="data_file_name"/>
+                                            <field name="data_file_name" invisible="1"/>
+                                            <button name="action_preview_document" string="View" type="object" class="btn-primary"/>
+                                        </tree>
+                                        <form >
+                                            <group>
+                                                <field name="data_file_name" string="Document"/>
+                                            </group>
+                                            <field name="data_file" widget="pdf_viewer" filename="data_file_name" />
+                                        </form>
+                                    </field>
+                                </group>
+
+                                <group string="Applicable Individually">
+                                    <group string="Applicant 1">
+                                        <field name="documents_applicable_applicant1_line" nolabel="0" widget="section_and_note_one2many" readonly="state in ('decline', 'accepted', 'funds_drawn_down')">
+                                            <tree editable="bottom" create="1" delete="0">
+                                                <field name="name"/>
+                                                <field name="data_file" filename="data_file_name"/>
+                                                <field name="data_file_name" invisible="1"/>
+                                                <button name="action_preview_document" string="View" type="object" class="btn-primary"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="data_file_name" string="Document"/>
+                                                </group>
+                                                <field name="data_file" widget="pdf_viewer" filename="data_file_name" />
+                                            </form>
+                                        </field>
+                                    </group>
+                                    <group string="Applicant 2" invisible="applicant_2 == False">
+                                        <field name="documents_applicable_applicant2_line" widget="section_and_note_one2many" nolabel="0" readonly="state in ('decline', 'accepted', 'funds_drawn_down')">
+                                            <tree editable="bottom" create="1" delete="0">
+                                                <field name="name"/>
+                                                <field name="data_file" filename="data_file_name"/>
+                                                <field name="data_file_name" invisible="1"/>
+                                                <button name="action_preview_document" string="View" type="object" class="btn-primary"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="data_file_name" string="Document"/>
+                                                </group>
+                                                <field name="data_file" widget="pdf_viewer" filename="data_file_name" />
+                                            </form>
+                                        </field>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                        <!-- <group>
+                            <group>
+                                <field name="fixed_term_payment"/>
+                                <field name="repayment_at_variable"/>
+                                <field name="repayment_at_variable_plus1"/>
+                                <field name="repayment_at_variable_plus2"/>
+                                <field name="max_possible_repayment"/>
+                            </group>
+                        </group> -->
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="application_view_search" model="ir.ui.view">
+            <field name="name">application.view.search</field>
+            <field name="model">application</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="applicant_1" />
+                    <field name="applicant_2" />
+                    <field name="mortgage_product_id"/>
+                    <filter name="first_time_buyer" string="First Time Buyer" domain="[('first_time_buyer', '=', 'yes')]" context="{}" />
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_status" string="Status" context="{'group_by': 'state'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="application_action" model="ir.actions.act_window">
+            <field name="name">Applications</field>
+            <field name="res_model">application</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_by_status': 1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    The Applications are saved here.
+                </p>
+            </field>
+        </record>
+
+        <record id="application_action_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="appsmod2.application_action" />
+            <field name="view_id" ref="appsmod2.application_view_tree"/>
+            <field name="view_mode">tree</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="application_action_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="appsmod2.application_action"/>
+            <field name="view_id" ref="appsmod2.application_view_form"/>
+            <field name="view_mode">form</field>
+            <field name="sequence">1</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Email template for sending email when external assessor submits the application for internal assessment after reviewing it -->
+        <record id="email_template_appsmod2_original_assignee" model="mail.template">
+            <field name="name">Application Re-Assigned</field>
+            <field name="email_from">${object.assignee.email}</field>
+            <field name="subject">${object.company_id.name} : Application Re-Assigned - ${object.name}</field>
+            <field name="email_to">${object.original_assignee.email}</field>
+            <field name="email_cc">${object.assignee.email}</field>
+            <field name="model_id" ref="appsmod2.model_application"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+                <![CDATA[
+                <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello,</p>
+                    <p>I can confirm I have assessed the Application No ${object.name} for ${object.company_id.name}, and I am assigning it back to ${object.original_assignee.name} for further processing.</p>
+                    <p>Please find attached assessment along with the invoice for your attention.</p>
+                    <p>Thank you.</p>
+                    <br/>
+                    <br/>
+                </div>
+                ]]>
+            </field>
+        </record>
+
+        <!-- Email template for sending email when application is checked and assigned to senior officer for approval -->
+        <record id="email_template_appsmod2_senior_loan_officer" model="mail.template">
+            <field name="name">Application Acceptance</field>
+            <field name="email_from">${object.original_assignee.email}</field>
+            <field name="subject">${object.company_id.name} : Application - ${object.name}</field>
+            <field name="email_to">${object.assignee.email}</field>
+            <field name="model_id" ref="appsmod2.model_application"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+                <![CDATA[
+                    <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                        <p>Hello,</p>
+                        <p>Please assess the Application No ${object.name} for ${object.company_id.name} and advise if it can be approved.</p>
+                        <p>If you have any questions, please contact me.</p>
+                        <p>Thank you!</p>
+                        <br/>
+                        <br/>
+                    </div>
+                ]]>
+            </field>
+        </record>
+
+        <!-- Email template for sending email application is submitted to external assessor -->
+        <record id="email_template_appsmod2_external_assessor" model="mail.template">
+            <field name="name">Application Assigned</field>
+            <field name="email_from">${object.original_assignee.email}</field>
+            <field name="subject">${object.company_id.name} : Application - ${object.name}</field>
+            <field name="email_to">${object.assignee.email}</field>
+            <field name="email_cc">${object.original_assignee.email}</field>
+            <field name="model_id" ref="appsmod2.model_application"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+                <![CDATA[
+                    <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                        <p>Hello,</p>
+                        <p>Please assess the Application No ${object.name} for ${object.company_id.name} and let us have your feedback.</p>
+                        <p>If you have any questions, please contact me.</p>
+                        <p>Thank you!</p>
+                        <br/>
+                        <br/>
+                    </div>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

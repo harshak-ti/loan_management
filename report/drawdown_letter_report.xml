@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_drawdown_letter_document">
+            <t t-set="doc" t-value="doc.with_context({'lang': doc.applicant_1.lang})" />
+            <div class="page">
+                <div>
+                    <span t-field="doc.applicant_1.name"/> <t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>
+                </div>
+                <div>
+                    <t t-if="doc.applicant_1.street"><span t-field="doc.applicant_1.street"/><br/></t>
+                    <t t-if="doc.applicant_1.street2"><span t-field="doc.applicant_1.street2"/><br/></t>
+                    <t t-if="doc.applicant_1.city"><span t-field="doc.applicant_1.city"/><br/></t>
+                    <t t-if="doc.applicant_1.state_id"><span t-field="doc.applicant_1.state_id"/><br/></t>
+                    <t t-if="doc.applicant_1.zip"><span t-field="doc.applicant_1.zip"/><br/></t>
+                    <t t-if="doc.applicant_1.country_id"><span t-field="doc.applicant_1.country_id"/></t>
+                </div>
+                <div class="my-4">
+                    <span>Applicants: <span t-field="doc.applicant_1"/> <t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2"/></t></span><br/>
+                    <t t-set="property_address" t-value="''"/>
+                    <t t-if="doc.street" t-set="property_address" t-value="property_address + doc.street"/>
+                    <t t-if="doc.street2" t-set="property_address" t-value="property_address + ', ' + doc.street2"/>
+                    <t t-if="doc.city" t-set="property_address" t-value="property_address + ', ' + doc.city"/>
+                    <t t-if="doc.state_id" t-set="property_address" t-value="property_address + ', ' + doc.state_id.name"/>
+                    <t t-if="doc.zip" t-set="property_address" t-value="property_address + ', ' + doc.zip"/>
+                    <t t-if="doc.country_id" t-set="property_address" t-value="property_address + ', ' + doc.country_id.name"/>
+                    <span>Property Address: <t t-esc="property_address.strip(',')"/></span><br/>
+                    <span>Date: <span t-esc="context_timestamp(datetime.datetime.today()).strftime('%d-%m-%Y')" /></span>
+                </div>
+                <div class="mb-4 mt-2">
+                    <span>Dear <span t-field="doc.applicant_1.first_name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.first_name"/></t></span>,
+                </div>
+                <p class="mb-3">
+                    We are delighted to inform you that we have now issued funds and your mortgage is drawn down. You should now contact your own solicitor, bank transfers may take a few days but they will be in funds shortly and you should hopefully be in a position to close.
+                </p>
+                <p class="mb-3">
+                    As noted in your Letter of Offer, we will only charge interest from the date of drawdown and we will calculate interest on a daily basis. We committed to communicate with you once drawdown was complete so that you have a record of all relevant figures. Please find an amortisation table attached which will set out all scheduled payments, breaking down interest payments and payments against capital. Please be aware this amortisation table is generated for payments as scheduled today. Any future changes to borrowing rates, repayment term or any under or over payments will impact the calculations.
+                </p>
+                <p class="mb-3">
+                    We hope this is helpful, please contact us should you have any questions.
+                </p>
+                <p class="mb-4">
+                    Yours sincerely,
+                </p>
+                <p class="mb-1">
+                    _________________________
+                </p>
+                <p><strong>CEO</strong></p>
+            </div>
+        </template>
+
+        <template id="report_drawdown_letter">
+            <t t-set="hide_header" t-value="true"/>
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="appsmod2.report_drawdown_letter_document" t-lang="doc.applicant_1.lang" />
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

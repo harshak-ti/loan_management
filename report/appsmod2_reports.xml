@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="decline_letter_report" model="ir.actions.report">
+            <field name="name">Decline Letter</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_decline_letter</field>
+            <field name="report_file">appsmod2.report_decline_letter</field>
+        </record>
+
+        <record id="drawdown_letter_report" model="ir.actions.report">
+            <field name="name">DrawDown Letter</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_drawdown_letter</field>
+            <field name="report_file">appsmod2.report_drawdown_letter</field>
+            <field name="print_report_name">'DrawDown Letter for %s ' % (object.name)</field>
+        </record>
+
+        <record id="principal_approval_letter_report" model="ir.actions.report">
+            <field name="name">In Principle Letter</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_principle_approval_letter</field>
+            <field name="report_file">appsmod2.report_principle_approval_letter</field>
+        </record>
+
+        <record id="affordability_calculator_report" model="ir.actions.report">
+            <field name="name">Affordability Calculator</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_affordability_calculator</field>
+            <field name="report_file">appsmod2.report_affordability_calculator</field>
+        </record>
+
+
+        <record id="letter_of_offer_2020" model="ir.actions.report">
+            <field name="name">Offer Letter</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_letter_of_offer_2020</field>
+            <field name="report_file">appsmod2.report_letter_of_offer_2020</field>
+        </record>
+
+        <record id="letter_of_offer" model="ir.actions.report">
+            <field name="name">Letter for Own Solicitor</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_letter_of_offer</field>
+            <field name="report_file">appsmod2.report_letter_of_offer</field>
+        </record>
+
+        <record id="esis_2020_report" model="ir.actions.report">
+            <field name="name">ESIS</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_esis_2020</field>
+            <field name="report_file">appsmod2.report_esis_2020</field>
+        </record>
+
+        <record id="esis_report" model="ir.actions.report">
+            <field name="name">ESIS</field>
+            <field name="model">application</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">appsmod2.report_esis</field>
+            <field name="report_file">appsmod2.report_esis</field>
+        </record>
+    </data>
+</odoo>

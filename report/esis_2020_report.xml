@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_esis_2020_document">
+            <t t-set="doc" t-value="doc.with_context({'lang': doc.applicant_1.lang})" />
+            <t t-call="appsmod2.appsmod2_external_layout">
+                <div class="page" style="font-size:15px;">
+                    <t t-set="heading_style" t-value="'border border-dark px-3 pt-1 pb-0'"/>
+                    <t t-set="body_style" t-value="'border border-dark border-top-0 p-3'"/>
+                    <h3 class="text-center mb-3">
+                        European Standard Information Sheet
+                    </h3>
+                    <div t-attf-class="{{heading_style}}">
+                        <div class="mb-1">
+                            This document was produced for <span t-field="doc.applicant_1.name"/> <t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t> on <span t-if="doc.date_of_offer" t-esc="doc.date_of_offer.strftime('%d %B %Y')"/>.
+                        </div>
+                        <div class="mb-1">
+                            This document was produced on the basis of the information that you have provided so far and on the current financial market conditions.
+                        </div>
+                        <div class="mb-1">
+                            The information below remains valid until <b><span t-if="doc.date_of_offer_plus_1" t-esc="doc.date_of_offer_plus_1.strftime('%d %B %Y')"/></b>, after that date, it may change in line with market conditions. 
+                        </div>
+                        <div class="mb-1">
+                            This document does not constitute an obligation for <span t-field="doc.company_id.name"/> to grant you a loan.
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            1. lender
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="row mb-1">
+                            <div class="col-3">
+                                <span>Name:</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-field="doc.company_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-3">
+                                <span>Address:</span>
+                            </div>
+                            <div class="col-9">
+                                <!-- <span t-field="doc.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/> -->
+                                <t t-if="doc.company_id.street"><span t-field="doc.company_id.street"/>, </t>
+                                <t t-if="doc.company_id.street2"><span t-field="doc.company_id.street2"/>, </t>
+                                <t t-if="doc.company_id.city"><span t-field="doc.company_id.city"/>, </t>
+                                <t t-if="doc.company_id.state_id"><span t-field="doc.company_id.state_id"/>, </t>
+                                <t t-if="doc.company_id.zip"><span t-field="doc.company_id.zip"/>, </t>
+                                <t t-if="doc.company_id.country_id"><span t-field="doc.company_id.country_id"/></t>
+                            </div>
+                        </div>
+                        <div class="row mb-1" t-if="doc.company_id.phone">
+                            <div class="col-3">
+                                <span>Telephone:</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-field="doc.company_id.phone"/>
+                            </div>
+                        </div>
+                        <div t-if="doc.company_id.email" class="row mb-1">
+                            <div class="col-3">
+                                <span>Email:</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-field="doc.company_id.email"/>
+                            </div>
+                        </div>
+                        <div t-if="doc.company_id.website" class="row mb-1">
+                            <div class="col-3">
+                                <span>Website:</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-field="doc.company_id.website"/>
+                            </div>
+                        </div>
+                        <div class="row p-3">
+                            <strong>
+                                We are not recommending a particular mortgage for you. However based on your answers to some questions, we are giving you information about this mortgage so that you can make your own choice.
+                            </strong>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            2. main features of the loan
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <strong>Amount of the Loan to be granted:</strong>
+                            </div>
+                            <div class="col-6">
+                                <span t-field="doc.mortgage_amount"/>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <strong>Currency of the Loan to be granted:</strong>
+                            </div>
+                            <div class="col-6">
+                                <strong>Euro (€)</strong>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <strong>Duration of the Loan:</strong>
+                            </div>
+                            <div class="col-6">
+                                <strong>
+                                    <t t-if="doc.mortgrage_term_year"><span t-field="doc.mortgrage_term_year" /> years </t>
+                                    <t t-if="doc.mortgrage_term_months != '0'"><span t-field="doc.mortgrage_term_months"/> months</t>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <strong>
+                                    Type of Loan:
+                                </strong>
+                            </div>
+                            <div class="col-6">
+                                <strong>
+                                    Annuity mortgage where the capital and interest are being repaid over the term of the loan.
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <strong>
+                                    Type of Applicable Interest Rate:
+                                </strong>
+                            </div>
+                            <div class="col-6">
+                                <strong t-if="doc.mortgage_type == 'variable_rate'">
+                                    Variable. The interest may vary from time to time. As a result your repayments may rise or fall during the term of the loan.
+                                </strong>
+                                <strong t-if="doc.mortgage_type != 'variable_rate'">
+                                    Fixed. The interest rate is fixed for a term of  <span t-field="doc.term_at_starting_rate"/> years and will convert to the standard mortgage variable rate prevailing at the time of expiry of the fixed rate term. The repayments will remain the same for the duration of the fixed rate term. Thereafter, the variable interest rate may vary from time to time. As a result your repayments may rise as well as fall during the remaining term of the loan.
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="mt-4 mb-4">
+                            The interest rates are calculated in reference to the credit union’s prevailing average cost of funds; taking into account the projected dividend rate payable on Member shares and the interest rate payable on saving deposits. The calculation of interest rate will also incorporate provisioning costs for funds at risk, contribution towards general operating costs, contribution towards specific product related costs and a margin spread.
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <strong>
+                                    Total Amount to be Reimbursed (Repaid)
+                                </strong>
+                            </div>
+                            <div class="col-6">
+                                <strong><span t-field="doc.esis_total_repaid"/></strong>
+                            </div>
+                        </div>
+                        <div class="mt-4 mb-2">
+                            <p t-if="doc.mortgage_type != 'variable_rate'">
+                                This means that you will pay back € <span t-esc="'%.2f'% doc.esis_cost_per_1"/>  for every €1.00 borrowed. As the borrowing rate is variable once the fixed term rate expires, this amount is illustrative and your repayments and the total amount repayable may vary upwards or downwards in accordance with interest rate changes. 
+                            </p>
+                            <p t-if="doc.mortgage_type == 'variable_rate'">
+                                This means that you will pay back € <span t-esc="'%.2f'% doc.esis_cost_per_1"/>  for every €1.00 borrowed. As the borrowing rate is variable this amount is 
+							    illustrative and your repayments and the total amount repayable may vary upwards or downwards in accordance with interest rate changes.
+                            </p>
+                        </div>
+                        <div class="mt-3 mb-2">
+                            <div>
+                                <strong>
+                                    Value of the property assumed to prepare this information sheet: € <span t-field="doc.property_value"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <strong>
+                                    Minimum value of the property required to borrow the illustrated amount: € <span t-field="doc.property_value"/>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="mt-4 mb-2">
+                            <div>
+                                <strong style="font-size:16px;">Security</strong>
+                            </div>
+                            <div>
+                                This home loan will be secured by a mortgage/charge over the following property:
+                            </div>
+                            <div>
+                                <strong>
+                                    <t t-if="doc.street"><span t-field="doc.street"/>, </t>
+                                    <t t-if="doc.street2"><span t-field="doc.street2"/>, </t>
+                                    <t t-if="doc.city"><span t-field="doc.city"/>, </t>
+                                    <t t-if="doc.state_id"><span t-field="doc.state_id"/>, </t>
+                                    <t t-if="doc.zip"><span t-field="doc.zip"/>, </t>
+                                    <t t-if="doc.country_id"><span t-field="doc.country_id"/></t>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            3. interest rate and other costs
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            The annual percentage rate of charge (APRC) is the total cost of the loan expressed as an annual percentage. The APRC is provided to help you to compare different offers.
+                        </div>
+                        <div class="row mb-2 mx-0 px-0">
+                            <div class="col-6 p-0">
+                                The APRC applicable to your loan is:
+                            </div>
+                            <div class="col-6 p-0">
+                                <span t-field="doc.esis_aprc" t-options="{'widget': 'float', 'precision': 1}"/>
+                            </div>
+                        </div>
+                        <div class="border border-dark p-1 mb-3">
+                            <strong>
+                                Warning: The variable borrowing rate  on this Housing Loan may be Adjusted by the Lender from time to time.
+                            </strong>
+                        </div>
+                        <div class="border border-dark p-1 mb-3">
+                            <strong>
+                                Warning: Please be aware that the variable borrowing rate may vary upwards or downward during the course of the loan. As a result your monthly repayment amount may vary upwards or downwards. This may cause your total cost of credit to increase or decrease.  
+                            </strong>
+                        </div>
+                        <div t-if="doc.mortgage_type != 'variable_rate'" class="border border-dark p-1 mb-3">
+                            <strong>
+                                Warning: You may have to pay charges if you pay off your loan early during the fixed rate term.  
+                            </strong>
+                        </div>
+                        <div class="mt-2 mb-2">
+                            <strong>
+                                Costs to be paid on once-off basis:
+                            </strong>
+                            <ol class="p-3" style="list-style-type:lower-roman;">
+                                <li>
+                                    <strong>Valuation Fee</strong>
+                                    <div class="mb-3">
+                                        To assess the value of your property and make sure that it offers suitable security for your mortgage loan, we will need you, at your expense, to provide us with a valuation report on it. This valuation report must be in our standard form and undertaken by a valuer from our Residential Mortgage Valuer's Panel. If the valuation of the property is undertaken more than four months before the requested date of drawdown of the mortgage loan or of the final stage payment, we will require you, at your expense, to provide us with an up-to-date valuation of the property (‘revaluation report’), in our standard form, before drawdown can take place.
+                                        <br/>
+                                        Where no valuation report fee is charged by the credit union, you will pay your Valuer directly and fees will be as agreed between you and the Valuer. Fees to be paid directly to the credit union in respect of this application are € <span t-esc="'%.2f'% doc.contribution_to_valuation"/> for the valuation report and € <span t-esc="'%.2f'% doc.contribution_to_revaluation"/> for any subsequent revaluation report as required.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong>Your own advisor's fees</strong>
+                                    <div class="mb-3">
+                                        You will pay any fees, charges and expenses that you are charged by any of your own advisers, including your solicitor,  in connection with the mortgage loan.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong>Stamp Duty</strong>
+                                    <div class="mb-3">
+                                        In the event that you are purchasing a property, stamp duty may be payable on your new home. Your solicitor will work out how much stamp duty you owe.
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="mt-2 mb-2">
+                            <strong>
+                                Costs to be paid regularly -
+                            </strong>
+                            <ol class="p-3" style="list-style-type: lower-roman;">
+                                <li>
+                                    <strong>
+                                        Insurance
+                                    </strong>
+                                    <div class="mb-3">
+                                        <ul>
+                                            <li>
+                                                <h6>For Your Property</h6>
+                                                <div class="mb-2">
+                                                    For your own protection as well as ours, it will be a condition in your letter of offer that your property is adequately insured, at your own cost.
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <h6>Life assurance</h6>
+                                                <div class="mb-2">
+                                                    If you or your dependants intend to use the property as a principal place of residence, you must  have mortgage protection insurance, unless you are exempt under the Consumer Credit Act 1995. The Special Conditions of this Credit Agreement will detail requirements in relation to mortgage protection/life assurance. These policies are designed to pay off your mortgage in full if you or your co-borrower die unexpectedly. The correct type of life assurance will depend on the amount, term and type of borrowing.
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <h6>Payment Protection Insurance</h6>
+                                                <div class="mb-2">
+                                                    You will have to pay payment protection premiums if you opt for this cover.
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-2">This APRC is calculated using assumptions regarding the interest rate. Assumptions used to calculate the APRC:-</p>
+                            <ul class="font-weight-bold">
+                                <li>The home loan will be drawn down on the date agreed between the Credit Union and the Borrower</li>
+                                <li>The first repayment will be made one month after drawdown</li>
+                                <li>The home loan will not be paid off prior to the completion of the term of the loan</li>
+                                <li t-if="doc.mortgage_type == 'fixed_variable_rate'">The interest rates do not vary for the duration of the loan </li>
+								<li t-if="doc.mortgage_type == 'variable_rate'">The interest rate does not vary for the duration of the loan</li>
+                            </ul>
+                        </div>
+                        <div class="mt-2 mb-3">
+                            <div class="border border-dark p-1">
+                                <strong>
+								    Warning:  Should the variable rate increase, this will cause the APRC to increase  
+								</strong>
+                            </div>
+                        </div>
+                        <div class=" mt-3 mb-3">
+                            Because <span t-if="doc.mortgage_type == 'fixed_variable_rate'">part of </span> your loan is a variable interest rate loan, the actual APRC could be different from this APRC if the interest rate for your loan changes.
+                            For example, if the interest rate rose by 1% the APRC could increase to <span t-field="doc.esis_aprc_1" t-options="{'widget': 'float', 'precision': 1}"/>%
+                        </div>
+                        <div class="mt-2 mb-3">
+                            <span>
+                                The following costs are not known to the lender and are therefore not included in the APRC: 
+                            </span>
+                            <ol class="mb-3 p-3">
+                                <li>Life assurance: Where required, your life assurance provider will advise you on this cost</li>
+                                <li>Property Insurance: Your property insurance provider will advise you on this cost</li>
+                                <li>Legal fees and registration costs: Where appropriate, your solicitor will advise you on these costs.</li>
+                                <li>Stamp duty: Where appropriate, your solicitor will advise you on these costs.</li>
+                            </ol>
+                            <div class="mt-3">
+                                Please make sure that you are aware of all other taxes and costs associated with your home loan.
+                            </div>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            4. Frequency and number of payments
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            <span>Repayment Frequency: </span>
+                            <span t-field="doc.esis_payment_frequency"/>
+                        </div>
+                        <div class="mb-2">
+                            <span>Number of Payments: </span>
+                            <span t-field="doc.esis_no_of_repayment"/>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            5. Amount of Each Instalment
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div t-if="doc.mortgage_type == 'variable_rate'" class="mb-2 font-weight-bold">
+                            <span>Amount of Each Instalment: </span>
+                            € <t t-if="doc.esis_payment_frequency == 'monthly'"><span t-field="doc.monthly_repayment"/></t> <t t-if="doc.esis_payment_frequency == 'weekly'"><span t-field="doc.esis_weekly_repayment"/></t> <t t-if="doc.esis_payment_frequency == 'fortnightly'"><span t-field="doc.esis_fortnightly_repayment"/></t>
+                        </div>
+                        <div t-if="doc.mortgage_type == 'fixed_variable_rate'" class="mb-2 font-weight-bold">
+                            <div class="mb-2">
+                                Amount of Each Instalment for the fixed term of <span t-field="doc.term_at_starting_rate"></span> years: € <span t-field="doc.fixed_term_payment" t-options="{'widget': 'float', 'precision': 2}"/>
+                            </div>
+                            <div class="mb-2">
+                                Amount of Each Instalment on the expiry of the fixed term: € <span t-field="doc.repayment_at_variable" t-options="{'widget': 'float', 'precision': 2}"/>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            Your income may change during the duration of the mortgage. Please consider whether you will still be able to afford your <span t-field="doc.esis_payment_frequency"/> repayment instalments if your income falls.
+                        </div>
+                        <div class="mb-3">
+                            <t t-set="precision" t-value="len(str(doc.esis_interest_rate).split('.')[1].rstrip('0'))"/>
+                            The variable interest rate on this loan can change. This means the amount of your instalments could increase or decrease. For example, if the interest rate rose to <span t-field="doc.esis_interest_rate" t-options="{'widget': 'float', 'precision': precision}"/>% your payments could increase to € <t t-if="doc.mortgage_type == 'variable_rate'"><t t-if="doc.esis_payment_frequency == 'monthly'"><span t-field="doc.esis_monthly_repayment_1" t-options="{'widget': 'float', 'precision': 2}"/></t> <t t-if="doc.esis_payment_frequency == 'weekly'"><span t-field="doc.esis_weekly_repayment_1" t-options="{'widget': 'float', 'precision': 2}"/></t> <t t-if="doc.esis_payment_frequency == 'fortnightly'"><span t-field="doc.esis_fortnightly_repayment_1" t-options="{'widget': 'float', 'precision': 2}"/></t></t><t t-if="doc.mortgage_type == 'fixed_variable_rate'"><span t-field="doc.repayment_at_variable_plus1" t-options="{'widget': 'float', 'precision': 2}"/></t>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            6. Additional Obligations
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <span>The borrower must comply with the following obligations in order to benefit from the lending conditions described in this document:-</span>
+                        <ol class="p-3">
+                            <li>The lending conditions described in this document (including the variable interest rate)  may change if these conditions are not complied with.</li>
+                            <li>The obligation to take out an adequate House Insurance Policy <u>prior to</u> mortgage drawdown (As this is to be arranged by the member independently the cost of this insurance is not included in the APRC and will be borne by the Member. The Member may use an insurance provider of their own choice)</li>
+                            <li>The obligation to maintain an adequate House Insurance policy for the lifetime of the mortgage/until the end of the Credit Agreement and until the final repayment instalment is received.</li>
+                            <li><u>Mortgage Protection/Life Assurance:</u>- The obligation to meet the requirements detailed in the Special Conditions of this Credit Agreement in relation to an appropriate life assurance policy</li>
+                            <li>The obligation to have your mortgage instalments paid by direct debit until the end of the Credit Agreement and until the final repayment instalment is received.</li>
+                        </ol>
+                        <div class="mt-4 mb-3">
+                            Please note that the lending conditions described in this document (including the variable interest rate) may change if these obligations are not complied with.
+                        </div>
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <span>Please note the possible consequences of terminating at a later stage any of the ancillary services relating to the loan:</span>
+                            </div>
+                            <div class="mt-2 mb-3">
+                                <strong>Consequences</strong>
+                                <ol class="mt-2 p-3">
+                                    <li>Failure to maintain and/or  furnish an adequate House Insurance policy during the lifetime of the mortgage, the Credit Union shall, at the cost to you arrange, take out or keep up such insurance or new House insurance policy to ensure adequate cover is in place for fire and other risks.</li>
+                                    <li>Failure to maintain any mortgage protection or life assurance policy associated with this loan could result in your dependants being unable to meet the loan repayments in the event of your death. The outstanding balance due on your loan will still remain due and owing. This could lead to repossession.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            7. early Repayment
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-3">
+                            You have the possibility to repay this loan early without penalty. You can repay your loan, either fully or partially, at any point during the term of the loan. 
+                        </div>
+                        <div class="mb-3">
+                            Exit charges may apply. These relate to Land Registry and other legal costs. Should you decide to repay this loan early, please contact us to ascertain the exact level of exit charges at that moment. While on a fixed interest rate, an early breakage charge may apply.
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            8. flexible features
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            You have the possibility to transfer this loan to another lender provided the amount due to the Credit Union is discharged in full. Please contact the Credit Union to ensure in relation to any outstanding conditions that must be met prior to repaying the loan.  You will be required to enter into a new Letter of Loan Offer with another lender. 
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            9. other rights of the borrower
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            You have 30 days after <span t-if="doc.date_of_offer" t-esc="doc.date_of_offer.strftime('%d %B %Y')"/> to reflect before committing yourself to taking out this loan. 
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            10. Complaints
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            If you have a complaint please contact our Complaints Officer on the telephone number set out above. A copy of our Complaints Procedure is available upon request in the Credit Union.
+                        </div>
+                        <div class="mb-2">
+                            If we do not resolve the complaint to your satisfaction internally, you can also contact: the Financial Services and Pensions Ombudsman.  Contact details are as follows: Financial Services and Pensions Ombudsman, Lincoln House, Lincoln Place, Dublin 2 Tel. (01) 567 7000, E-mail: <u>info@fspo.ie</u>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            11. Non-Compliance with the commitments linked to the loan: consequences for the borrower
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            If you miss a repayment the Credit Union will exercise its rights under the terms of the loan offer, the mortgage charge and any other applicable laws, this may include:
+                        </div>
+                        <ol class="p-3">
+                            <li>Your account may go into arrears</li>
+                            <li>Your credit rating may be affected</li>
+                            <li>Your loan may become repayable on demand</li>
+                            <li>Ultimately, you may lose your home.</li>
+                        </ol>
+                        <div class="mt-2 mb-3">
+                            Should you encounter difficulties in making your <span t-field="doc.esis_payment_frequency"/> payments, please contact our Mortgage Support Team straight away on  <span t-field="doc.company_id.phone"/> to explore possible solutions.
+                        </div>
+                        <div t-attf-class="{{heading_style}} mb-3">
+                            <strong>
+                                Warning: If you do not keep up your payments in accordance with the Credit Agreement you may lose your home.  
+                            </strong>
+                        </div>
+                        <div t-attf-class="{{heading_style}} mb-3">
+                            <strong>
+		                    Warning: If you do not meet the repayments on your loan, your account will go into arrears. This may affect your credit rating which may limit your ability to access credit in the future.  
+		                    </strong>
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            12. Additional Information
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-2">
+                            The offer letter and any non-contractual obligations arising out of or in connection with it will be governed by the laws applicable to the Republic of Ireland.  
+                        </div>
+                        <div class="mb-2">
+                            The offer letter is in English and we will only write and communicate with you in English.<br/>
+                            Acceptance of loan offer must only be made after consultation with and in the presence of your solicitor.
+                        </div>
+                    </div>
+                    <div t-attf-class="{{heading_style}} border-top-0">
+                        <strong class="text-uppercase">
+                            13. Supervisor
+                        </strong>
+                    </div>
+                    <div t-attf-class="{{body_style}}">
+                        <div class="mb-3">
+                            This lender is regulated and supervised  by the Central Bank of Ireland. <br/>Contact details for the Central Bank of Ireland are: 
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-3"><strong>Address:</strong></div>
+                            <div class="col-9">
+                                New Wappping Street<br/>North Wall Quay<br/>Dublin 1<br/>D01 F7X3
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-3">
+                                <strong>Telephone:</strong>
+                            </div>
+                            <div class="col-9">
+                                +353 1 224 6000
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-3">
+                                <strong>Fax:</strong>
+                            </div>
+                            <div class="col-9">
+                                +353 1 671 6561
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-3">
+                                <strong>Website:</strong>
+                            </div>
+                            <div class="col-9">
+                                <u>www.centralbank.ie</u>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_esis_2020">
+            <t t-set="hide_header" t-value="true"/>
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="appsmod2.report_esis_2020_document" t-lang="doc.applicant_1.lang"/>
+                    </t>
+                </t>
+		    </t>
+		</template>
+    </data>
+</odoo>

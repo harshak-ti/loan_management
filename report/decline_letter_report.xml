@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_decline_letter_document">
+            <t>
+            	<t t-set="doc" t-value="doc.with_context({'lang':doc.applicant_1.lang})" />
+                <div class="page">
+                    <br/>
+					<p class="text-right">
+                        Date : <span t-esc="context_timestamp(datetime.datetime.today()).strftime('%d-%m-%Y')" />  
+                    </p>
+                    <p class="mb-3">
+                        Dear <span t-field="doc.applicant_1.first_name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>,
+                    </p>
+                    <p>
+                    Thank you for your recent mortgage application.
+                    </p>
+                    <div class="border border-dark p-2 mb-4" style="min-height:200px;">
+                    	<div>
+                    		<span t-field="doc.decline_reason"/>
+                    	</div>
+                    	<div>
+                    		<span t-field="doc.decline_message"/>
+                    	</div>
+                    </div>
+                    <div class="mb-4">
+                    Your faithfully,
+                    </div>
+                    <div class="mb-3 mt-3">
+                    _ _ _ _ _ _ _ _ _ _ _ _ _
+                    </div>
+                    <div>
+                    CEO
+                    </div>
+				</div>        
+            </t>
+        </template>
+
+        <template id="report_decline_letter">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="appsmod2.report_decline_letter_document" t-lang="doc.applicant_1.lang"/>
+                    </t>
+                </t>
+		    </t>
+		</template>
+    </data>
+</odoo>

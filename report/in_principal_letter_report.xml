@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_principle_approval_letter_document">
+            <t t-set="doc" t-value="doc.with_context({'lang': doc.applicant_1.lang})" />
+            <div class="page">
+                <div>
+                    <span t-field="doc.applicant_1.name"/> <t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.name"/></t>
+                </div>
+                <div>
+                    <t t-if="doc.applicant_1.street"><span t-field="doc.applicant_1.street"/><br/></t>
+                    <t t-if="doc.applicant_1.street2"><span t-field="doc.applicant_1.street2"/><br/></t>
+                    <t t-if="doc.applicant_1.city"><span t-field="doc.applicant_1.city"/><br/></t>
+                    <t t-if="doc.applicant_1.state_id"><span t-field="doc.applicant_1.state_id"/><br/></t>
+                    <t t-if="doc.applicant_1.zip"><span t-field="doc.applicant_1.zip"/><br/></t>
+                    <t t-if="doc.applicant_1.country_id"><span t-field="doc.applicant_1.country_id"/></t>
+                </div>
+                <div class="my-3">
+                    Date: <span t-esc="context_timestamp(datetime.datetime.today()).strftime('%d-%m-%Y')" />
+                </div>
+                <div class="mb-2 mt-2">
+                    <span>Dear <span t-field="doc.applicant_1.first_name"/><t t-if="doc.applicant_2"> and <span t-field="doc.applicant_2.first_name"/></t></span>,
+                </div>
+                <p class="mb-3">
+                    Thank you for your recent mortgage application. We are pleased to inform you that based on the information we have received to date we are in a position to provide 'Approval in Principle' to the value of €<span t-field="doc.mortgage_amount"/>.
+                </p>
+                <p class="mb-3">
+                    Approval in Principle is intended only as a guide of what your budget may be when beginning your search for a new property. It is based on limited information we have asked for and does not consider all of your financial circumstances. The Approval in Principle is not an offer of a Mortgage loan and should not be used to purchase a property.
+                </p>
+                <p class="mb-3">
+                    We will now begin a full assessment of your application and will inform you should we require any further information or documentation.
+                </p>
+                <div class="border border-dark p-2 mb-3">
+                    <strong>
+                        Warning: Credit cannot be granted where the information provided is insufficient for the lender to fully assess your credit worthiness
+                    </strong>
+                </div>
+                <p class="mb-3">
+                    When you have identified a property you are interested in we will require an independent valuation to be conducted on that property. You should contact your appointed Member Representative who will assist you in this regard.
+                </p>
+                <p class="mb-3">
+                    This Approval in Principle is valid for 6 months from the date of this letter.
+                </p>
+                <p class="mb-3">
+                    Should you have any questions throughout the application process, please do not hesitate to contact your Member Representative who will be happy to help.
+                </p>
+                <p class="mb-4">
+                    Your faithfully,
+                </p>
+                <p class="mb-1">
+                    _ _ _ _ _ _ _ _ _ _ _ _ _
+                </p>
+                <p><strong>CEO</strong></p>
+            </div>
+        </template>
+
+        <template id="report_principle_approval_letter">
+            <t t-set="hide_header" t-value="true"/>
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-call="appsmod2.report_principle_approval_letter_document" t-lang="doc.applicant_1.lang" />
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

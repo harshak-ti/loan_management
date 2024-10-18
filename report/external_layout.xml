@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="appsmod2_external_layout_standard_inherit" inherit_id="web.internal_layout">
+            <xpath expr="//div[contains(@class,'header')]" position="attributes">
+                <t t-if="hide_header">
+                    <attribute name="t-attf-class">d-none</attribute>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="appsmod2_external_layout_header">
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-ese="else">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+        </template>
+
+        <template id="appsmod2_external_layout_footer2">
+            <div class="footer">
+                <div style="border:solid; border-width: 1px; padding:2px;">
+                    <strong class="text-uppercase">
+                        WARNING: Your home is at risk if you do not keep up payments on a mortgage or any other loan secured on it
+                    </strong>
+                </div>
+                <div style="border:solid; border-width: 1px; padding:2px; vertical-align: middle; text-align: center; margin-top:5px;">
+                    <span t-field="doc.company_id"/>
+                    <span t-esc="doc.date_of_offer.strftime('%d-%m-%y')" ></span>
+                    <span>Page </span><span class="page" /> of <span class="topage" />
+                </div>
+            </div>
+        </template>
+
+        <template id="appsmod2_external_layout_footer">
+            <div class="footer">
+                 <div style="border:solid; border-width: 1px; padding:2px; vertical-align: middle; text-align: center; margin-top:5px;">
+                    <span t-field="doc.company_id"/>
+                    <span t-esc="doc.date_of_offer.strftime('%d-%m-%y')" ></span>
+                    <span>Page </span><span class="page" /> of <span class="topage" />
+                </div>
+            </div>
+        </template>
+
+        <template id="appsmod2_external_layout">
+            <t t-call="appsmod2.appsmod2_external_layout_header"/>
+            <t t-raw="0"/>
+            <t t-call="appsmod2.appsmod2_external_layout_footer"/>
+        </template>
+
+        <template id="appsmod2_external_layout_2">
+            <t t-call="appsmod2.appsmod2_external_layout_header"/>
+            <t t-raw="0"/>
+            <t t-call="appsmod2.appsmod2_external_layout_footer2"/>
+        </template>
+    </data>
+</odoo>
